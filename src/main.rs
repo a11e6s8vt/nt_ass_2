@@ -33,24 +33,20 @@ fn main() {
                 end,
             };
 
-            let mut has_prim_roots: Vec<u64> = Vec::new();
-            let mut has_no_prim_roots: Vec<u64> = Vec::new();
+            let mut nums_with_prim_roots: Vec<u64> = Vec::new();
+            let mut nums_without_no_prim_roots: Vec<u64> = Vec::new();
 
             for i in r {
-                println!("i = {}", i);
-                let no_of_prim_roots = cryptography::primitive_roots_count_modulo_n(i);
-                if no_of_prim_roots >= 1 {
-                    has_prim_roots.push(i);
+                let prim_roots_i = cryptography::primitive_roots_trial_n_error(i);
+                if prim_roots_i.len() > 0 {
+                    nums_with_prim_roots.push(i);
                 } else {
-                    has_no_prim_roots.push(i);
+                    nums_without_no_prim_roots.push(i);
                 }
             }
 
-            println!("Numbers with at least one primitive roots: {:?}", has_prim_roots);
-            println!("");
-            println!("Numbers with at least one primitive roots: {:?}", has_no_prim_roots);
-        
-            for i in has_prim_roots {
+            println!("Numbers with at least one primitive roots: {:?}", nums_with_prim_roots);
+            for i in nums_with_prim_roots {
                 let p_factors = prime_factors(i);
                 let mut form: String = String::new();
                 for (factor, exp) in p_factors {
@@ -62,7 +58,9 @@ fn main() {
                 println!("{} = {}", i, form);
             }
 
-            for i in has_no_prim_roots {
+            println!("");
+            println!("Numbers with no primitive roots: {:?}", nums_without_no_prim_roots);
+            for i in nums_without_no_prim_roots {
                 let p_factors = prime_factors(i);
                 let mut form: String = String::new();
                 for (factor, exp) in p_factors {
